@@ -18,10 +18,12 @@ For the Arduino sketch, I have used the ```DHTesp``` and ```FirebaseESP8266``` l
 ## NodeMCU Code
 
 The code is pretty straight forward. Connect to my local WiFi network, use NTP thorugh a UDP connection to get time remotly and generate unix time stamps (with a 4 hour shift to acomodate for my time zone), and connect to my project's firebase database. Every **10 seocnds**, the system will read sensor data and add it to a ```FirebaseJson``` object that has the ```Humidity```, ```Temperature```, and ```Time``` values saved up before pushing to the database. Individual values for the current humidity and temperature are also sent for the purpose of showing them in real time as a text box in the website. The following is a GIF showing how the structured data is sent to the databse.
+![database](media/database.gif)
 
 ## Website
 
-Full disclosure, I have used [this neat template](https://html5up.net/overflow) from HTML5 UP as the basis of the site; I think it looks pretty cool! The main JS codes are the ```plot.js``` and ```realtime.js``` files that are responsible for plotting the data from firebase through **Plotly.JS**, showing the current measurment, and do some quick statsitical calculations. The website is also hosted on firebase and I have set up a custom ```.tk``` domain so that I can use a neat short name for the URL.
+Full disclosure, I have used [this neat template](https://html5up.net/overflow) from HTML5 UP as the basis of the site; I think it looks pretty cool! The main JS codes are the ```plot.js``` and ```realtime.js``` files that are responsible for plotting the data from firebase through **Plotly.JS**, showing the current measurment, and do some quick statsitical calculations. The website is also hosted on firebase and I have set up a custom ```.tk``` domain so that I can use a neat short name for the URL. Here is a GIF showing the user interface of the site:
+![website](media/site.gif)
 
 ## Conclusion
 
