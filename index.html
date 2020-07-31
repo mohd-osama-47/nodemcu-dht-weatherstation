@@ -1,0 +1,214 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+
+    <!-- Import the site icon and stuff -->
+    <link rel="apple-touch-icon" sizes="57x57" href="images/icon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="images/icon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/icon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="images/icon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/icon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="images/icon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="images/icon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="images/icon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/icon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="images/icon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="images/icon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/icon/favicon-16x16.png">
+    <link rel="manifest" href="images/icon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="images/icon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+
+    <title>Osama's Mock Weather Station</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+
+<body class="is-preload" onLoad='counter()'>
+
+    <body>
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
+
+        <!-- <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-analytics.js"></script> -->
+
+        <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-database.js"></script>
+
+        <!-- Include Plotly.js -->
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <!-- Include the moment.js library -->
+        <script src="https://momentjs.com/downloads/moment.js"></script>
+
+        <script>
+        </script>
+
+
+
+    </body>
+    <!-- Header -->
+    <section id="header">
+        <header>
+            <h1>Mock Weather Station</h1>
+            <p>By Mohammed Osama</p>
+        </header>
+        <footer>
+            <a href="#banner" class="button style2 scrolly-middle">Proceed to Explanation</a>
+        </footer>
+    </section>
+
+    <!-- Banner -->
+    <section id="banner">
+        <header>
+            <h2>Concept</h2>
+        </header>
+        <p>This is a website interface that connects to a temperature and humdity </br> sensor setup based on an ESP8266 microcontroller and a DH22 sensor over WiFi.</br> The next section shows data that is pushed through TCP/IP into a firebase database,
+            </br> that is then visualized for ease of use using JS. This is meant as a mini-project </br> to "emulate" a weather station as showcased in the EmiratesTech sessions. </br> Check my <a href="https://github.com/mohd-osama-47" target="_blank">GitHub</a>            for more insight into how the code was written.</p>
+        <footer>
+            <a href="#temp" class="button style2 scrolly">To The Monitor!</a>
+        </footer>
+    </section>
+
+    <!-- First Block -->
+    <figure id="first" class="container box style3">
+
+        <header>
+            <h2>Temperature and Humidity trends</h2>
+            <form method="post" action="#">
+                <div class='row'>
+                    <div style="width:300px; margin:0 auto;">
+                        <input class="text" type="text" name="measure-count" id="measure-count" value="" placeholder="No. of measurements" />
+                        <button type="button" onClick="counter()">Plot!</button>
+                    </div>
+                </div>
+            </form>
+        </header>
+
+
+        <!-- First Table -->
+        <div id='temp'></div>
+        <section>
+            <header>
+                <h2>Real-Time Measurments</h2>
+            </header>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="33%">Humidity</th>
+                            <th width="33%">Temperature</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td id='humid-now' width="33%"></td>
+                            <td id='temp-now' width="33%"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+
+        <hr />
+
+        <!-- Second Table -->
+        <section>
+            <header>
+                <h2>Quick Stats</h2>
+            </header>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="33%">Average Temperature</th>
+                            <th width="33%">Average Humidity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td id='temp-avg' width="33%"></td>
+                            <td id='humid-avg' width="33%"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <hr />
+
+            <!-- Third Table -->
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="33%">Max Temperature</th>
+                            <th width="33%">Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td id='temp-max' width="33%"></td>
+                            <td id='timet-max' width="33%"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <hr />
+
+            <!-- Fourth Table -->
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="33%">Max Humidity</th>
+                            <th width="33%">Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td id='humid-max' width="33%"></td>
+                            <td id='timeh-max' width="33%"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+        <hr />
+
+    </figure>
+
+
+    <!-- Footer with my social media stuff -->
+    <section id="footer">
+        <ul class="icons">
+            <li><a href="https://github.com/mohd-osama-47" class="icon brands fa-github" target="_blank"><span class="label">GitHub</span></a></li>
+            <li><a href="https://www.linkedin.com/in/mohammed-osama-44a249165/" class="icon brands fa-linkedin-in" target="_blank"><span class="label">LinkedIn</span></a></li>
+        </ul>
+        <ul class="menu">
+            <li>Design Inspired By: <a href="http://html5up.net" target="_blank">HTML5 UP</a></li>
+        </ul>
+    </section>
+
+    <!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery.scrolly.min.js"></script>
+    <script src="assets/js/jquery.poptrox.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/plot.js"></script>
+    <script src="assets/js/realtime.js"></script>
+</body>
+
+</html>
