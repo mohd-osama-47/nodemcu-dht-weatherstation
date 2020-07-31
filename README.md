@@ -18,6 +18,7 @@ For the Arduino sketch, I have used the ```DHTesp``` and ```FirebaseESP8266``` l
 ## NodeMCU Code
 
 The code is pretty straight forward. Connect to my local WiFi network, use NTP thorugh a UDP connection to get time remotly and generate unix time stamps (with a 4 hour shift to acomodate for my time zone), and connect to my project's firebase database. Every **10 seocnds**, the system will read sensor data and add it to a ```FirebaseJson``` object that has the ```Humidity```, ```Temperature```, and ```Time``` values saved up before pushing to the database. Individual values for the current humidity and temperature are also sent for the purpose of showing them in real time as a text box in the website. The following is a GIF showing how the structured data is sent to the databse.
+
 ![database](media/database.gif)
 
 ## Website
