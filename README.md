@@ -9,6 +9,10 @@ Check [mockweatherstation.tk](https://mockweatherstation.tk/) to see the final r
 
 ## Concept
 
+<p align="center">
+  <img src="media/block.png" />
+</p>
+
 The mini-project as a whole was an excuse for me to make an IoT project and have it visualize sensor data (Humidity and Temperature in this case) in a website that is accessible from anywhere in the world. A NodeMCU microcontroller with an ESP8266 WiFi module is used to collect data from a DHT11 sensor and save said data in a firebase real-time database. From there, a website (also hosted in firebase) with my own custom domain name access the real-time database and visualizes the data in an interactive plot. Said plot can also be set to only show a specific amount of data points. A table at the bottom of the page also shows the current sesonr measurment and some quick statistical data of the set (average, maximum heat and temperature with their time stamps). For testing purposes, the sensor pushes a data reading every 10 seconds, this can be easily changed to any other value as needed.
 
 ## Used NodeMCU Libraries
