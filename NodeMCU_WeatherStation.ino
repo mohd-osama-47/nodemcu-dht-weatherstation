@@ -26,6 +26,11 @@
 #include <DHTesp.h>
 #include <WiFiUdp.h>
 
+//for the oled screen
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
 #define NTP_OFFSET   0      // In seconds, add your offset here!
 #define NTP_INTERVAL 60 * 1000    // In miliseconds, will refresh the timestamps depending on this amount
 #define NTP_ADDRESS  "europe.pool.ntp.org"
@@ -41,6 +46,13 @@
 
 #define measure_delay 10000   //Set the amount of time, in millisecond, between measurements
 
+#define SCREEN_WIDTH 128 // OLED display width, in pixels
+#define SCREEN_HEIGHT 64 // OLED display height, in pixels
+
+// Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
+
+
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, NTP_ADDRESS, NTP_OFFSET, NTP_INTERVAL);
 
@@ -52,6 +64,18 @@ DHTesp dht;
 
 void setup () {
   Serial.begin (115200);  //change to 9600 if you are experience issues
+  
+  //initializing a startup screen
+  if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    Serial.println(F("SSD1306 allocation failed"));
+    for(;;);
+  }
+  delay(2000);  //need to test lower values for faster setup time
+  display.clearDisplay();
+  display.setTextColor(WHITE);
+
+  display_start(WIFI_SSID);
+  
   WiFi.begin (WIFI_SSID, WIFI_PASSWORD); 
   Serial.print ("Connecting to");
   Serial.print (WIFI_SSID);
@@ -96,6 +120,9 @@ void loop ()
   Serial.print(t);
   Serial.println("°C");
   Serial.println("Time is: " + formattedTime);
+  
+  //show the current measurements on screen
+  display_values(t, h, formattedTime);
 
   //for structured pushes, save the humidity, temperature, and timestamp in one JSON object and push them all together
   json.add("Humidity", h);
@@ -126,3 +153,58 @@ void loop ()
 
    delay (measure_delay);
 } 
+
+void display_start(String network){
+
+  // clear display
+  display.clearDisplay();
+  
+  // display temperature
+  display.setTextSize(1);
+  display.setCursor(0,20);
+  display.print("Connecting to:");
+  display.setTextSize(2);
+  display.setCursor(0,30);
+  display.print(network);
+
+  
+  
+  display.display();
+  }
+
+void display_values(int t, int h, String date){
+
+  // clear display
+  display.clearDisplay();
+  
+  // display temperature
+  display.setTextSize(1);
+  display.setCursor(0,0);
+  display.print("Temperature: ");
+  display.setTextSize(2);
+  display.setCursor(0,10);
+  display.print(t);
+  display.print(" ");
+  display.setTextSize(1);
+  display.cp437(true);
+  display.write(167);
+  display.setTextSize(2);
+  display.print("C");
+  
+  // display humidity
+  display.setTextSize(1);
+  display.setCursor(0, 30);
+  display.print("Humidity: ");
+  display.setTextSize(2);
+  display.setCursor(0, 40);
+  display.print(h);
+  display.print(" %"); 
+
+  // display time
+  display.setTextSize(1);
+  display.setCursor(0, 55);
+  display.print("Date: " + date);
+  
+  display.display(); 
+  
+  }
