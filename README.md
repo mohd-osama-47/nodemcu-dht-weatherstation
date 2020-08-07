@@ -34,7 +34,7 @@ The following is a GIF showing how the structured data is sent to the databse.
   <img src="media/database.gif" />
 </p>
 
-Another addition added later is an OLED display (128x64 in this case) is connected to the NodeMCU (SCL to D1, SDA to D2) and displays the measurements and the time said measurements were taken.
+Another addition added later is an OLED display, 128x64 in this case, that is connected to the NodeMCU (SCL to D1, SDA to D2) and displays the measurements and their timestamps.
 
 
 <p align="center">
