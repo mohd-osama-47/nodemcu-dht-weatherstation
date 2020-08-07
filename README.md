@@ -34,6 +34,13 @@ The following is a GIF showing how the structured data is sent to the databse.
   <img src="media/database.gif" />
 </p>
 
+Another addition added later is an OLED display (128x64 in this case) is connected to the NodeMCU (SCL to D1, SDA to D2) and displays the measurements and the time said measurements were taken.
+
+
+<p align="center">
+  <img src="media/oled.jpeg" />
+</p>
+
 ## Website
 
 Full disclosure, I have used [this neat template](https://html5up.net/overflow) from HTML5 UP as the basis of the site; I think it looks pretty cool! The main JS codes are the ```plot.js``` and ```realtime.js``` files that are responsible for plotting the data from firebase through **Plotly.JS**, showing the current measurment, and do some quick statsitical calculations. The website is also hosted on firebase and I have set up a custom ```.tk``` domain so that I can use a neat short name for the URL. Here is a GIF showing the user interface of the site:
